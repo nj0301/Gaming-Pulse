@@ -1,7 +1,0 @@
-import { StaticPage, staticPageMetadata } from "@/components/static-page";
-
-export const metadata = staticPageMetadata("review-policy");
-
-export default function Page() {
-  return <StaticPage slug="review-policy" />;
-}

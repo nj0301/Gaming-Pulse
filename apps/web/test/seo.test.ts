@@ -1,60 +1,54 @@
 import { describe, expect, it } from "vitest";
-import { articles, authors } from "@gaming-pulse/seed-data";
-import { articleJsonLd, breadcrumbJsonLd, organizationJsonLd } from "@/lib/seo/jsonld";
-import { buildAtom, buildRss } from "@/lib/seo/feeds";
+import type { RawgGame } from "@/lib/rawg";
+import { breadcrumbJsonLd, gameJsonLd, organizationJsonLd } from "@/lib/seo/jsonld";
 
-const news = articles.find((a) => a.articleType === "news")!;
-const opinion = articles.find((a) => a.articleType === "opinion")!;
-const review = articles.find((a) => a.articleType === "review" && a.review)!;
-const author = authors[0];
+const sampleGame: RawgGame = {
+  slug: "elden-ring",
+  name: "Elden Ring",
+  summary: "An action RPG.",
+  description: "An action RPG set in a vast open world.",
+  cover: { src: "https://media.rawg.io/cover.jpg", alt: "Elden Ring cover art", width: 1280, height: 720, credit: "RAWG" },
+  heroArtwork: { src: "https://media.rawg.io/hero.jpg", alt: "Elden Ring key art", width: 1280, height: 720, credit: "RAWG" },
+  screenshots: [],
+  genres: ["RPG", "Action"],
+  genreSlugs: ["role-playing-games-rpg", "action"],
+  platformNames: ["PC", "PlayStation 5"],
+  releaseStatus: "released",
+  releaseDate: "2022-02-25",
+  rating: 4.6,
+  website: "https://example.com",
+  storeLinks: [{ store: "Steam", url: "https://store.steampowered.com/elden-ring" }],
+};
 
-describe("JSON-LD builders (structured-data validation)", () => {
-  it("emits NewsArticle for news and Article for opinion", () => {
-    expect(articleJsonLd(news, author)["@type"]).toBe("NewsArticle");
-    expect(articleJsonLd(opinion, author)["@type"]).toBe("Article");
-  });
-
-  it("emits Review with rating only when review data exists", () => {
-    const data = articleJsonLd(review, author) as Record<string, never>;
-    expect(data["@type"]).toBe("Review");
-    expect(data["reviewRating"]).toMatchObject({ ratingValue: review.review!.score });
-    expect(articleJsonLd(news, author)).not.toHaveProperty("reviewRating");
-  });
-
-  it("includes required NewsArticle fields", () => {
-    const data = articleJsonLd(news, author);
-    for (const key of ["headline", "datePublished", "dateModified", "image", "author", "publisher"]) {
-      expect(data, key).toHaveProperty(key);
-    }
+describe("JSON-LD builders (real-data structured data)", () => {
+  it("builds an Organization entry with no fictional policy links", () => {
+    const org = organizationJsonLd();
+    expect(org["@type"]).toBe("Organization");
+    expect(org).not.toHaveProperty("publishingPrinciples");
+    expect(org).not.toHaveProperty("correctionsPolicy");
   });
 
   it("builds positioned breadcrumbs with absolute URLs", () => {
     const data = breadcrumbJsonLd([
       { name: "Home", href: "/" },
-      { name: "News", href: "/news" },
+      { name: "Games", href: "/games" },
     ]) as { itemListElement: Array<{ position: number; item: string }> };
     expect(data.itemListElement[0].position).toBe(1);
     expect(data.itemListElement[1].item).toMatch(/^https?:\/\//);
   });
 
-  it("declares corrections and publishing policies on the organization", () => {
-    const org = organizationJsonLd();
-    expect(org).toHaveProperty("correctionsPolicy");
-    expect(org).toHaveProperty("publishingPrinciples");
-  });
-});
-
-describe("feeds", () => {
-  it("produces valid-shaped RSS with escaped entities", () => {
-    const rss = buildRss(articles.slice(0, 5));
-    expect(rss).toContain("<rss version=\"2.0\"");
-    expect(rss).toContain("<guid isPermaLink=\"true\">");
-    expect(rss).not.toMatch(/<title>[^<]*&(?!amp;|lt;|gt;|quot;)/);
+  it("builds a VideoGame entry from real RAWG data, including rating", () => {
+    const data = gameJsonLd(sampleGame) as Record<string, unknown>;
+    expect(data["@type"]).toBe("VideoGame");
+    expect(data.name).toBe("Elden Ring");
+    expect(data.genre).toEqual(["RPG", "Action"]);
+    expect(data.gamePlatform).toEqual(["PC", "PlayStation 5"]);
+    expect(data).toHaveProperty("aggregateRating");
+    expect((data.aggregateRating as { ratingValue: number }).ratingValue).toBe(4.6);
   });
 
-  it("produces atom entries with updated timestamps", () => {
-    const atom = buildAtom(articles.slice(0, 5));
-    expect(atom).toContain("<feed xmlns=\"http://www.w3.org/2005/Atom\">");
-    expect(atom.match(/<entry>/g)?.length).toBe(5);
+  it("omits aggregateRating when RAWG has no rating yet", () => {
+    const data = gameJsonLd({ ...sampleGame, rating: 0 }) as Record<string, unknown>;
+    expect(data).not.toHaveProperty("aggregateRating");
   });
 });

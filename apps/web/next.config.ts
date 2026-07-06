@@ -48,10 +48,12 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@gaming-pulse/core", "@gaming-pulse/seed-data"],
   images: {
     formats: ["image/avif", "image/webp"],
-    // External image allowlist: only the CMS and configured media CDN.
+    // External image allowlist: the CMS, configured media CDN, and RAWG's
+    // real game-cover CDN (media.rawg.io) — required for /games real photos.
     remotePatterns: [
       ...(cmsHost ? [{ protocol: "https" as const, hostname: cmsHost }, { protocol: "http" as const, hostname: cmsHost }] : []),
       ...(mediaCdnHost ? [{ protocol: "https" as const, hostname: mediaCdnHost }] : []),
+      { protocol: "https" as const, hostname: "media.rawg.io" },
     ],
     // Demo placeholder art is SVG; allow it through the optimizer safely.
     dangerouslyAllowSVG: true,

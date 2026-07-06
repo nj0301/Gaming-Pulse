@@ -38,7 +38,7 @@ const FEEDS: FeedSource[] = [
 ];
 
 const FETCH_TIMEOUT_MS = 8_000;
-const CACHE_TTL_MS = 5 * 60_000;
+const CACHE_TTL_MS = 60 * 60_000; // 1 hour
 
 let cache: { items: WireArticle[]; expiresAt: number } | null = null;
 
@@ -109,7 +109,7 @@ async function fetchFeed(source: FeedSource): Promise<WireArticle[]> {
     const response = await fetch(source.url, {
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       headers: { "User-Agent": "GamingPulse-NewsAggregator/1.0 (+https://example.com)" },
-      next: { revalidate: 300 },
+      next: { revalidate: 3600 },
     });
     if (!response.ok) return [];
     return parseFeed(await response.text(), source);
@@ -164,13 +164,10 @@ const STOPWORDS = new Set([
 ]);
 
 /**
- * Real trending topics: proper-noun-like phrases (game/company/platform names)
- * mentioned by multiple *different* outlets in the current live wire. This is
- * an actual cross-outlet-coverage signal, not a fabricated score — "trending"
- * literally means several real newsrooms are covering the same thing right now.
+ * Pure computation half of trending-topic extraction — separated from the
+ * network fetch so it can be unit-tested with fixed input.
  */
-export async function getTrendingTopics(limit = 6): Promise<TrendingTopic[]> {
-  const all = await getWireArticles();
+export function computeTrendingTopics(all: WireArticle[], limit = 6): TrendingTopic[] {
   const byKeyword = new Map<string, { sources: Set<string>; article: WireArticle }>();
 
   for (const item of all) {
@@ -200,4 +197,15 @@ export async function getTrendingTopics(limit = 6): Promise<TrendingTopic[]> {
     .filter((topic) => topic.sourceCount >= 2)
     .sort((a, b) => b.sourceCount - a.sourceCount || +new Date(b.article.publishedAt) - +new Date(a.article.publishedAt))
     .slice(0, limit);
+}
+
+/**
+ * Real trending topics: proper-noun-like phrases (game/company/platform names)
+ * mentioned by multiple *different* outlets in the current live wire. This is
+ * an actual cross-outlet-coverage signal, not a fabricated score — "trending"
+ * literally means several real newsrooms are covering the same thing right now.
+ */
+export async function getTrendingTopics(limit = 6): Promise<TrendingTopic[]> {
+  const all = await getWireArticles();
+  return computeTrendingTopics(all, limit);
 }

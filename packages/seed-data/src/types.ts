@@ -219,14 +219,7 @@ export type HomepageSectionKind =
   | "hero"
   | "trending"
   | "latest"
-  | "release-timeline"
-  | "platform-pulse"
-  | "videos"
-  | "insights"
-  | "reviews"
-  | "esports"
-  | "hardware"
-  | "deals"
+  | "upcoming-releases"
   | "newsletter";
 
 export interface SeedHomepageSection {

@@ -8,6 +8,8 @@ export interface GameCardData {
   cover: { src: string; alt: string };
   releaseStatus: "released" | "upcoming" | "early-access" | "tba";
   genres: string[];
+  /** Real release date (ISO), shown in place of genres when provided. */
+  releaseDate?: string | null;
 }
 
 const statusLabel: Record<GameCardData["releaseStatus"], { label: string; tone: "green" | "cyan" | "warning" | "neutral" }> = {
@@ -19,6 +21,9 @@ const statusLabel: Record<GameCardData["releaseStatus"], { label: string; tone: 
 
 export function GameCard({ game }: { game: GameCardData }) {
   const status = statusLabel[game.releaseStatus];
+  const dateLabel = game.releaseDate
+    ? new Date(game.releaseDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : null;
   return (
     <article className="gp-panel gp-panel-violet group flex h-full flex-col overflow-hidden transition-colors hover:border-violet/60">
       <Link href={`/games/${game.slug}`} aria-label={game.name} className="flex h-full flex-col">
@@ -36,7 +41,9 @@ export function GameCard({ game }: { game: GameCardData }) {
           <h3 className="mt-2 line-clamp-2 font-display text-sm font-bold leading-snug text-fg transition-colors group-hover:text-violet">
             {game.name}
           </h3>
-          <p className="mt-auto line-clamp-1 pt-1 text-xs text-fg-muted">{game.genres.join(" · ") || "—"}</p>
+          <p className="mt-auto line-clamp-1 pt-1 text-xs text-fg-muted">
+            {dateLabel ?? game.genres.join(" · ") ?? "—"}
+          </p>
         </div>
       </Link>
     </article>

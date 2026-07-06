@@ -1,58 +1,37 @@
 import type { Metadata } from "next";
-import { isUpcoming, releaseSortKey } from "@gaming-pulse/core";
-import { cms } from "@/lib/cms";
-import { Container } from "@/components/ui/section";
-import { ReleaseCalendar } from "@/components/calendar/release-calendar";
+import { getUpcomingGames, isRawgEnabled } from "@/lib/rawg";
+import { Container, EmptyState } from "@/components/ui/section";
+import { UpcomingList } from "@/components/games/upcoming-list";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Upcoming game releases",
-  description:
-    "Every upcoming release we track — filter by platform, genre, region, type and date confidence. Calendar, timeline and list views.",
+  description: "Real upcoming game releases, dated and sourced via RAWG.",
   alternates: { canonical: "/upcoming-games" },
 };
 
 export default async function UpcomingGamesPage() {
-  const [releaseDates, games, platforms, companies] = await Promise.all([
-    cms.getReleaseDates(),
-    cms.getGames(),
-    cms.getPlatforms(),
-    cms.getCompanies(),
-  ]);
-
-  const gameBySlug = new Map(games.map((g) => [g.slug, g]));
-
-  const entries = releaseDates
-    .filter((rd) => isUpcoming(rd))
-    .sort((a, b) => releaseSortKey(a) - releaseSortKey(b))
-    .map((rd) => {
-      const game = gameBySlug.get(rd.gameSlug);
-      return {
-        ...rd,
-        gameName: game?.name ?? rd.gameSlug,
-        genres: game?.genres ?? [],
-        developerSlug: game?.developerSlug ?? "",
-        publisherSlug: game?.publisherSlug ?? "",
-        cover: game?.cover ?? null,
-      };
-    });
+  const games = isRawgEnabled() ? await getUpcomingGames(60) : [];
 
   return (
     <Container className="py-10">
       <header className="mb-8">
         <h1 className="font-display text-3xl font-bold text-fg">Upcoming releases</h1>
-        <p className="mt-2 max-w-2xl text-fg-secondary">
-          Dates shown at the precision we actually know — a Q3 window never masquerades as a day. Unconfirmed windows
-          are labeled. (Demo build: all releases are fictional.)
-        </p>
+        <p className="mt-2 max-w-2xl text-fg-secondary">Real upcoming games, sorted by release date, via RAWG.</p>
       </header>
-      <ReleaseCalendar
-        entries={entries}
-        platforms={platforms.map((p) => ({ name: p.name, slug: p.slug, shortName: p.shortName }))}
-        genres={[...new Set(games.flatMap((g) => g.genres))].sort()}
-        companies={companies.map((c) => ({ name: c.name, slug: c.slug }))}
-      />
+      {games.length === 0 ? (
+        <EmptyState
+          title={isRawgEnabled() ? "No upcoming releases available right now" : "Upcoming releases not configured"}
+          hint={
+            isRawgEnabled()
+              ? "RAWG may be temporarily unreachable — check back shortly."
+              : "Add a free RAWG_API_KEY (sign up at rawg.io/apidocs) to apps/web/.env.local to enable this page."
+          }
+        />
+      ) : (
+        <UpcomingList games={games} />
+      )}
     </Container>
   );
 }

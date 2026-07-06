@@ -1,7 +1,9 @@
 /**
- * CMS entry point. Chooses the active adapter:
+ * Site-configuration entry point (nav, settings, homepage layout only).
+ * Chooses the active adapter:
  *  - CMS_URL set  -> Strapi adapter (with per-call fixture fallback)
- *  - CMS_URL unset -> bundled fictional demo content
+ *  - CMS_URL unset -> bundled default site config
+ * All actual content (news, games) comes from @/lib/news-feed and @/lib/rawg.
  */
 import { cache } from "react";
 import { CMS_URL } from "../config";

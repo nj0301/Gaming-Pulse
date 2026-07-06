@@ -3,7 +3,7 @@ import { timeAgo } from "@gaming-pulse/core";
 import { getTrendingTopics } from "@/lib/news-feed";
 import { Container, EmptyState } from "@/components/ui/section";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Trending in gaming",

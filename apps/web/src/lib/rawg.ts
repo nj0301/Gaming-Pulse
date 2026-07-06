@@ -1,14 +1,14 @@
 /**
- * RAWG adapter — real games, real cover art, real release dates.
+ * RAWG adapter — real games, real cover art, real release dates, real store
+ * links. Free tier: sign up at https://rawg.io/apidocs for a key (no cost,
+ * generous quota). Set RAWG_API_KEY in apps/web/.env.local to enable.
  *
- * Free tier: sign up at https://rawg.io/apidocs for a key (no cost, generous
- * quota). Set RAWG_API_KEY in apps/web/.env.local to enable. Without a key,
- * callers fall back to the bundled fictional demo games (clearly labeled) —
- * nothing here ever fabricates data to look real.
+ * Without a key, every function here returns an empty result — callers must
+ * show a clear "not configured" state rather than fabricating content.
  */
 
 const API_BASE = "https://api.rawg.io/api";
-const REVALIDATE_SECONDS = 3600;
+const REVALIDATE_SECONDS = 3600; // 1 hour
 
 export interface RawgImage {
   src: string;
@@ -21,14 +21,19 @@ export interface RawgImage {
 export interface RawgGame {
   slug: string;
   name: string;
+  /** Short (~300 char) summary, derived from the full description. */
   summary: string;
+  /** Full description text, for the game's About section. */
+  description: string;
   cover: RawgImage;
   heroArtwork: RawgImage;
   screenshots: RawgImage[];
   genres: string[];
+  genreSlugs: string[];
   platformNames: string[];
   releaseStatus: "released" | "upcoming" | "tba";
   releaseDate: string | null;
+  /** RAWG community rating, 0–5. */
   rating: number;
   website: string;
   storeLinks: Array<{ store: string; url: string }>;
@@ -60,7 +65,7 @@ interface RawgListItem {
   background_image: string | null;
   released: string | null;
   rating: number;
-  genres?: Array<{ name: string }>;
+  genres?: Array<{ name: string; slug: string }>;
   platforms?: Array<{ platform: { name: string } }>;
 }
 
@@ -87,10 +92,12 @@ function mapListItem(item: RawgListItem): RawgGame {
     slug: item.slug,
     name: item.name,
     summary: "",
+    description: "",
     cover: img(item.background_image, `${item.name} cover art`),
     heroArtwork: img(item.background_image, `${item.name} key art`),
     screenshots: [],
     genres: (item.genres ?? []).map((g) => g.name),
+    genreSlugs: (item.genres ?? []).map((g) => g.slug),
     platformNames: (item.platforms ?? []).map((p) => p.platform.name),
     releaseStatus: releaseStatusOf(item.released),
     releaseDate: item.released,
@@ -109,7 +116,7 @@ export async function getPopularGames(limit = 20): Promise<RawgGame[]> {
   return data?.results.map(mapListItem) ?? [];
 }
 
-/** Real upcoming releases, ordered by release date, for the calendar. */
+/** Real upcoming releases, ordered by release date. */
 export async function getUpcomingGames(limit = 40): Promise<RawgGame[]> {
   const today = new Date().toISOString().slice(0, 10);
   const future = new Date(Date.now() + 365 * 86_400_000).toISOString().slice(0, 10);
@@ -131,7 +138,7 @@ interface RawgDetail {
   released: string | null;
   rating: number;
   website?: string;
-  genres?: Array<{ name: string }>;
+  genres?: Array<{ name: string; slug: string }>;
   platforms?: Array<{ platform: { name: string } }>;
   stores?: Array<{ store: { name: string }; url?: string }>;
 }
@@ -144,14 +151,18 @@ export async function getRawgGameBySlug(slug: string): Promise<RawgGame | null> 
   ]);
   if (!detail) return null;
 
+  const description = (detail.description_raw ?? "").trim();
+
   return {
     slug: detail.slug,
     name: detail.name,
-    summary: (detail.description_raw ?? "").split("\n")[0]?.slice(0, 300) ?? "",
+    summary: description.split("\n")[0]?.slice(0, 300) ?? "",
+    description: description.slice(0, 3000),
     cover: img(detail.background_image, `${detail.name} cover art`),
     heroArtwork: img(detail.background_image_additional ?? detail.background_image, `${detail.name} key art`),
     screenshots: (shots?.results ?? []).slice(0, 6).map((s) => img(s.image, `${detail.name} screenshot`)),
     genres: (detail.genres ?? []).map((g) => g.name),
+    genreSlugs: (detail.genres ?? []).map((g) => g.slug),
     platformNames: (detail.platforms ?? []).map((p) => p.platform.name),
     releaseStatus: releaseStatusOf(detail.released),
     releaseDate: detail.released,
@@ -161,6 +172,17 @@ export async function getRawgGameBySlug(slug: string): Promise<RawgGame | null> 
       .filter((s) => s.url)
       .map((s) => ({ store: s.store.name, url: s.url! })),
   };
+}
+
+/** Real games sharing a genre, for "similar games" — excludes the current game. */
+export async function getSimilarGames(genreSlug: string, excludeSlug: string, limit = 6): Promise<RawgGame[]> {
+  if (!genreSlug) return [];
+  const data = await rawgFetch<{ results: RawgListItem[] }>("/games", {
+    genres: genreSlug,
+    page_size: String(limit + 1),
+    ordering: "-rating",
+  });
+  return (data?.results ?? []).filter((g) => g.slug !== excludeSlug).slice(0, limit).map(mapListItem);
 }
 
 /** Case-insensitive game name search, for the universal search bar. */

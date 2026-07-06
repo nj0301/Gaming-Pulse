@@ -4,20 +4,15 @@ import { BreakingTicker } from "@/components/home/breaking-ticker";
 import { HeroSection } from "@/components/home/hero-section";
 import { TrendingSection } from "@/components/home/trending-section";
 import { LatestGrid } from "@/components/home/latest-grid";
-import { ReleaseTimeline } from "@/components/home/release-timeline";
-import { PlatformPulse } from "@/components/home/platform-pulse";
-import { VideosSection } from "@/components/home/videos-section";
-import { CategoryStrip } from "@/components/home/category-strip";
-import { DealsSection } from "@/components/home/deals-section";
+import { UpcomingSection } from "@/components/home/upcoming-section";
 import { NewsletterSection } from "@/components/home/newsletter-section";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 /**
- * The homepage is fully CMS-driven: section order, visibility, curation and
- * item counts come from the Homepage Configuration single type. Editors
- * reorder or hide sections without code changes. News-related sections pull
- * from the live RSS wire (see @/lib/news-feed) instead of demo content.
+ * The homepage is CMS-driven for section order/visibility (Homepage
+ * Configuration single type). Every section pulls real data: news from the
+ * live RSS wire (@/lib/news-feed), games from RAWG (@/lib/rawg).
  */
 export default async function HomePage() {
   const sections = await cms.getHomepageSections();
@@ -43,54 +38,8 @@ async function SectionRenderer({ section }: { section: HomepageSection }) {
       return <TrendingSection title={section.title} maxItems={section.maxItems} />;
     case "latest":
       return <LatestGrid title={section.title} maxItems={section.maxItems} />;
-    case "release-timeline":
-      return <ReleaseTimeline title={section.title} maxItems={section.maxItems} />;
-    case "platform-pulse":
-      return <PlatformPulse title={section.title} maxItems={section.maxItems} />;
-    case "videos":
-      return <VideosSection title={section.title} maxItems={section.maxItems} />;
-    case "insights":
-      return (
-        <CategoryStrip
-          title={section.title}
-          categorySlug="insights"
-          href="/insights"
-          accent="violet"
-          maxItems={section.maxItems}
-        />
-      );
-    case "reviews":
-      return (
-        <CategoryStrip
-          title={section.title}
-          categorySlug="reviews"
-          href="/reviews"
-          accent="green"
-          maxItems={section.maxItems}
-        />
-      );
-    case "esports":
-      return (
-        <CategoryStrip
-          title={section.title}
-          categorySlug="esports"
-          href="/esports"
-          accent="magenta"
-          maxItems={section.maxItems}
-        />
-      );
-    case "hardware":
-      return (
-        <CategoryStrip
-          title={section.title}
-          categorySlug="hardware"
-          href="/hardware"
-          accent="warning"
-          maxItems={section.maxItems}
-        />
-      );
-    case "deals":
-      return <DealsSection title={section.title} maxItems={section.maxItems} />;
+    case "upcoming-releases":
+      return <UpcomingSection title={section.title} maxItems={section.maxItems} />;
     case "newsletter":
       return <NewsletterSection />;
     default:

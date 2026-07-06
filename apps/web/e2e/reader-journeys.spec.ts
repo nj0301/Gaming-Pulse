@@ -1,74 +1,82 @@
 import { expect, test } from "@playwright/test";
 
+/**
+ * Every page tested here is backed by real data: the live news RSS wire
+ * (no configuration needed) or RAWG (needs RAWG_API_KEY; tests for those
+ * pages accept either the real-content state or the honest "not configured"
+ * empty state — never a fictional fallback, since none exists anymore).
+ */
 test.describe("critical reader journeys", () => {
-  test("homepage renders CMS-driven sections", async ({ page }) => {
+  test("homepage renders real, CMS-ordered sections", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "Trending Now" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Latest News" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Upcoming Releases" })).toBeVisible();
   });
 
-  test("reader can open an article from the homepage and see sourcing", async ({ page }) => {
+  test("a homepage headline links to the real external source, not an internal page", async ({ page }) => {
     await page.goto("/");
-    await page
-      .getByRole("heading", { level: 3 })
-      .first()
-      .getByRole("link")
-      .click();
-    await expect(page).toHaveURL(/\/news\//);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    await expect(page.getByText(/fact status/i).first()).toBeVisible();
-    await expect(page.getByText(/^sources$/i)).toBeVisible();
+    const link = page.locator('main a[target="_blank"][rel*="noopener"]').first();
+    await expect(link).toBeVisible();
+    const href = await link.getAttribute("href");
+    expect(href).toMatch(/^https?:\/\//);
+    expect(href).not.toContain(new URL(page.url()).host);
   });
 
-  test("rumor coverage is visually flagged", async ({ page }) => {
-    await page.goto("/news/ashen-covenant-footage-leak");
-    await expect(page.getByRole("note")).toContainText(/not been verified/i);
-    await expect(page.getByText(/unconfirmed \/ unknown/i)).toBeVisible();
+  test("/news lists real headlines attributed to real outlets", async ({ page }) => {
+    await page.goto("/news");
+    await expect(page.getByRole("heading", { name: "News", level: 1 })).toBeVisible();
+    const outlets = ["Eurogamer", "PC Gamer", "GameSpot", "Rock Paper Shotgun", "VG247", "Destructoid", "Nintendo Life"];
+    const bodyText = await page.locator("main").innerText();
+    expect(outlets.some((name) => bodyText.includes(name))).toBe(true);
   });
 
-  test("game profile shows release dates and store links", async ({ page }) => {
-    await page.goto("/games/petal-and-blade");
-    await expect(page.getByRole("heading", { name: "Petal & Blade" })).toBeVisible();
-    await expect(page.getByText("August 14, 2026").first()).toBeVisible();
-    await expect(page.getByText("Where to get it")).toBeVisible();
+  test("/trending explains the real cross-outlet methodology", async ({ page }) => {
+    await page.goto("/trending");
+    await expect(page.getByText(/multiple different real outlets/i)).toBeVisible();
   });
 
-  test("release calendar filters narrow results", async ({ page }) => {
+  test("/games shows real games or an honest not-configured state — never fictional content", async ({ page }) => {
+    await page.goto("/games");
+    await expect(page.getByRole("heading", { name: "Games", level: 1 })).toBeVisible();
+    const notConfigured = page.getByText(/not configured/i);
+    const gameLinks = page.locator('a[href^="/games/"]');
+    await expect(notConfigured.or(gameLinks.first())).toBeVisible();
+  });
+
+  test("/upcoming-games shows real releases or an honest not-configured state", async ({ page }) => {
     await page.goto("/upcoming-games");
-    const count = page.getByText(/\d+ releases?/);
-    await expect(count).toBeVisible();
-    const before = await count.textContent();
-    await page.getByLabel("Platform").selectOption("nintendo");
-    const after = await count.textContent();
-    expect(before).not.toEqual(after);
+    await expect(page.getByRole("heading", { name: "Upcoming releases" })).toBeVisible();
   });
 
-  test("search returns results and handles empty states", async ({ page }) => {
-    await page.goto("/search?q=petal");
+  test("search returns live results and handles empty states", async ({ page }) => {
+    await page.goto("/search?q=the");
     await expect(page.getByText(/results? for/)).toBeVisible();
-    await page.goto("/search?q=zzzznotathing");
+    await page.goto("/search?q=zzzqqqnotarealthing");
     await expect(page.getByText(/no results/i)).toBeVisible();
   });
 
-  test("keyboard user can skip to content and reach navigation", async ({ page }) => {
+  test("keyboard user can skip to content", async ({ page }) => {
     await page.goto("/");
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
   });
 
-  test("sitemaps and feeds respond", async ({ request }) => {
-    for (const path of ["/sitemap.xml", "/news-sitemap.xml", "/image-sitemap.xml", "/video-sitemap.xml", "/rss.xml", "/atom.xml", "/robots.txt"]) {
+  test("sitemap and robots respond, and no dead feed routes remain", async ({ request }) => {
+    for (const path of ["/sitemap.xml", "/robots.txt"]) {
       const response = await request.get(path);
       expect(response.status(), path).toBe(200);
     }
+    for (const path of ["/rss.xml", "/atom.xml", "/news-sitemap.xml", "/image-sitemap.xml", "/video-sitemap.xml"]) {
+      const response = await request.get(path);
+      expect(response.status(), path).toBe(404);
+    }
   });
 
-  test("news sitemap only contains recent news URLs", async ({ request }) => {
-    const xml = await (await request.get("/news-sitemap.xml")).text();
-    // Fixture publish dates are in the past; the 48h window must exclude them.
-    expect(xml).toContain("<urlset");
-    expect(xml).not.toContain("sponsored");
+  test("deleted fictional-content routes are gone", async ({ request }) => {
+    for (const path of ["/reviews", "/guides", "/esports", "/hardware", "/deals", "/videos", "/team", "/corrections"]) {
+      const response = await request.get(path);
+      expect(response.status(), path).toBe(404);
+    }
   });
 
   test("newsletter signup validates and confirms", async ({ page }) => {

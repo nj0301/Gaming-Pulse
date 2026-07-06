@@ -29,13 +29,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Breaking gaming news, trending games, release dates, reviews, guides and original industry analysis. (Demo build with fictional content.)",
+    "Real-time gaming news aggregated from major outlets, plus a real games database with covers, release dates and store links.",
   alternates: {
     canonical: "/",
-    types: {
-      "application/rss+xml": `${SITE_URL}/rss.xml`,
-      "application/atom+xml": `${SITE_URL}/atom.xml`,
-    },
   },
   openGraph: {
     siteName: SITE_NAME,

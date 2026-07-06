@@ -3,7 +3,7 @@ import { getWireArticles } from "@/lib/news-feed";
 import { WireCard } from "@/components/cards/wire-card";
 import { Container, EmptyState } from "@/components/ui/section";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Gaming news",

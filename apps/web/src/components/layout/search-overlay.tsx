@@ -19,11 +19,6 @@ interface FlatResult {
 
 interface ApiResults {
   games: Array<{ name: string; slug: string }>;
-  companies: Array<{ name: string; slug: string }>;
-  authors: Array<{ name: string; slug: string }>;
-  platforms: Array<{ name: string; slug: string }>;
-  categories: Array<{ name: string; slug: string }>;
-  tags: Array<{ name: string; slug: string }>;
   wire: Array<{ title: string; link: string; sourceName: string }>;
 }
 
@@ -72,11 +67,6 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
         const flat: FlatResult[] = [
           ...data.wire.map((w) => ({ type: "News", label: w.title, href: w.link, hint: w.sourceName, external: true })),
           ...data.games.map((g) => ({ type: "Game", label: g.name, href: `/games/${g.slug}` })),
-          ...data.platforms.map((p) => ({ type: "Platform", label: p.name, href: `/platform/${p.slug}` })),
-          ...data.categories.map((c) => ({ type: "Category", label: c.name, href: `/category/${c.slug}` })),
-          ...data.tags.map((t) => ({ type: "Tag", label: t.name, href: `/tag/${t.slug}` })),
-          ...data.authors.map((a) => ({ type: "Author", label: a.name, href: `/author/${a.slug}` })),
-          ...data.companies.map((c) => ({ type: "Company", label: c.name, href: `/search?q=${encodeURIComponent(c.name)}` })),
         ];
         setResults(flat);
         setState("done");
@@ -129,7 +119,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Search live news, games, platforms…"
+            placeholder="Search live news and games…"
             aria-label="Search query"
             role="combobox"
             aria-expanded={results.length > 0}

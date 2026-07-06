@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cms } from "@/lib/cms";
 import { searchWireArticles } from "@/lib/news-feed";
+import { isRawgEnabled, searchRawgGames } from "@/lib/rawg";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q")?.slice(0, 100) ?? "";
   try {
-    const [results, wire] = await Promise.all([cms.search(q), searchWireArticles(q, 6)]);
+    const [wire, games] = await Promise.all([
+      searchWireArticles(q, 6),
+      isRawgEnabled() ? searchRawgGames(q, 6) : Promise.resolve([]),
+    ]);
     return NextResponse.json(
-      { ...results, wire },
+      { wire, games: games.map((g) => ({ name: g.name, slug: g.slug })) },
       { headers: { "Cache-Control": "public, max-age=30, stale-while-revalidate=300" } },
     );
   } catch {
