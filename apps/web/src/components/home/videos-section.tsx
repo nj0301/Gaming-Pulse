@@ -11,7 +11,7 @@ export async function VideosSection({ title, maxItems }: { title: string; maxIte
     <section aria-label={title}>
       <Container>
         <SectionHeading title={title} href="/videos" accent="magenta" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {videos.map((video, index) => (
             <Reveal key={video.slug} delay={(index % 4) * 0.05}>
               <VideoCard video={video} />

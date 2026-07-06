@@ -31,7 +31,7 @@ export default async function VideosPage() {
       {videos.length === 0 ? (
         <EmptyState title="No videos yet" />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {videos.map((video, index) => (
             <Reveal key={video.slug} delay={(index % 3) * 0.05}>
               <VideoCard video={video} />

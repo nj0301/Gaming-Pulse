@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cms } from "@/lib/cms";
+import { searchWireArticles } from "@/lib/news-feed";
 import { Container, EmptyState } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
+import { WireCard } from "@/components/cards/wire-card";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -14,11 +16,12 @@ export const metadata: Metadata = {
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q = "" } = await searchParams;
   const query = q.slice(0, 100);
-  const results = query.length >= 2 ? await cms.search(query) : null;
+  const [results, wireResults] = query.length >= 2
+    ? await Promise.all([cms.search(query), searchWireArticles(query, 9)])
+    : [null, []];
 
   const groups = results
     ? ([
-        ["Articles", results.articles.map((a) => ({ label: a.title, href: `/news/${a.slug}`, hint: a.articleType }))],
         ["Games", results.games.map((g) => ({ label: g.name, href: `/games/${g.slug}`, hint: "game" }))],
         ["Platforms", results.platforms.map((p) => ({ label: p.name, href: `/platform/${p.slug}`, hint: "platform" }))],
         ["Categories", results.categories.map((c) => ({ label: c.name, href: `/category/${c.slug}`, hint: "category" }))],
@@ -27,7 +30,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       ] as const)
     : [];
 
-  const total = groups.reduce((sum, [, items]) => sum + items.length, 0);
+  const total = groups.reduce((sum, [, items]) => sum + items.length, 0) + wireResults.length;
 
   return (
     <Container className="py-10">
@@ -44,11 +47,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           name="q"
           defaultValue={query}
           placeholder="Search articles, games, platforms…"
-          className="w-full rounded border border-edge bg-surface px-4 py-2.5 text-fg placeholder:text-fg-muted focus:border-cyan"
+          className="w-full border border-edge bg-surface px-4 py-2.5 text-fg placeholder:text-fg-muted focus:border-cyan"
         />
         <button
           type="submit"
-          className="rounded bg-cyan px-5 py-2.5 font-label text-sm font-bold uppercase tracking-wider text-bg"
+          className="bg-cyan px-5 py-2.5 font-label text-sm font-bold uppercase tracking-wider text-bg"
         >
           Search
         </button>
@@ -67,6 +70,16 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             <p className="text-sm text-fg-muted" aria-live="polite">
               {total} result{total === 1 ? "" : "s"} for “{query}”
             </p>
+            {wireResults.length > 0 && (
+              <section aria-label="Live news">
+                <h2 className="mb-3 font-display text-lg font-bold text-fg">Live news</h2>
+                <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {wireResults.map((item) => (
+                    <WireCard key={item.id} article={item} />
+                  ))}
+                </div>
+              </section>
+            )}
             {groups
               .filter(([, items]) => items.length > 0)
               .map(([group, items]) => (
@@ -77,7 +90,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          className="flex items-center justify-between rounded-lg border border-edge bg-surface px-4 py-3 transition-colors hover:border-cyan/50"
+                          className="flex items-center justify-between border border-edge bg-surface px-4 py-3 transition-colors hover:border-cyan/50"
                         >
                           <span className="text-fg">{item.label}</span>
                           <Badge tone="neutral">{item.hint}</Badge>

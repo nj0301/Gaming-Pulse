@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { cms } from "@/lib/cms";
+import { getPopularGames, isRawgEnabled } from "@/lib/rawg";
 import { Container, EmptyState } from "@/components/ui/section";
 import { GameCard } from "@/components/cards/game-card";
-import { Reveal } from "@/components/motion/reveal";
-import { TiltCard } from "@/components/motion/tilt-card";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Games database",
@@ -14,27 +13,33 @@ export const metadata: Metadata = {
 };
 
 export default async function GamesPage() {
-  const games = await cms.getGames();
+  const [rawgGames, demoGames] = await Promise.all([
+    isRawgEnabled() ? getPopularGames(30) : Promise.resolve([]),
+    cms.getGames(),
+  ]);
 
   return (
     <Container className="py-10">
       <header className="mb-8">
         <h1 className="font-display text-3xl font-bold text-fg">Games</h1>
         <p className="mt-2 max-w-2xl text-fg-secondary">
-          Every game in the Gaming Pulse database, with releases, coverage and trailers. (Demo build: all games are
-          fictional.)
+          {isRawgEnabled()
+            ? "Real, current games and cover art via RAWG."
+            : "Demo build: showing fictional placeholder games. Add a free RAWG_API_KEY to show real games with real cover art — see apps/web/.env.example."}
         </p>
       </header>
-      {games.length === 0 ? (
+      {rawgGames.length > 0 ? (
+        <div className="grid auto-rows-fr grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {rawgGames.map((game) => (
+            <GameCard key={game.slug} game={game} />
+          ))}
+        </div>
+      ) : demoGames.length === 0 ? (
         <EmptyState title="No games in the database yet" />
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {games.map((game, index) => (
-            <Reveal key={game.slug} delay={(index % 5) * 0.04}>
-              <TiltCard>
-                <GameCard game={game} />
-              </TiltCard>
-            </Reveal>
+        <div className="grid auto-rows-fr grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {demoGames.map((game) => (
+            <GameCard key={game.slug} game={game} />
           ))}
         </div>
       )}

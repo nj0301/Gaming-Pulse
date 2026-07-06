@@ -27,8 +27,8 @@ export function SectionHeading({
 
   return (
     <div className="mb-6 flex items-end justify-between gap-4">
-      <h2 className="flex items-center gap-3 font-display text-xl font-bold text-fg sm:text-2xl">
-        <span aria-hidden className={clsx("h-6 w-1 rounded", accentClass)} />
+      <h2 className="flex items-center gap-3 font-display text-xl font-bold uppercase tracking-wide text-fg sm:text-2xl">
+        <span aria-hidden className={clsx("h-6 w-1", accentClass)} />
         {title}
       </h2>
       {href ? (
@@ -47,7 +47,7 @@ export function SectionHeading({
 
 export function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
-    <div className="rounded-lg border border-edge bg-surface p-10 text-center">
+    <div className="gp-panel p-10 text-center">
       <p className="font-display text-lg font-semibold text-fg">{title}</p>
       {hint && <p className="mt-2 text-sm text-fg-muted">{hint}</p>}
     </div>
@@ -55,5 +55,5 @@ export function EmptyState({ title, hint }: { title: string; hint?: string }) {
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div aria-hidden className={clsx("gp-skeleton rounded-lg", className)} />;
+  return <div aria-hidden className={clsx("gp-skeleton", className)} />;
 }

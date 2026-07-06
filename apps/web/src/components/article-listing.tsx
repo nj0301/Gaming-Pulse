@@ -39,7 +39,7 @@ export async function ArticleListing({
       {visible.length === 0 ? (
         <EmptyState title="No stories here yet" hint="Check back soon — or explore the latest news." />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((article, index) => (
             <Reveal key={article.slug} delay={(index % 3) * 0.05}>
               <ArticleCard article={article} priority={index < 3 && page === 1} />

@@ -26,7 +26,7 @@ export function ArticleCard({
   priority = false,
 }: {
   article: Article;
-  variant?: "default" | "compact" | "wide";
+  variant?: "default" | "compact";
   priority?: boolean;
 }) {
   const href = `/news/${article.slug}`;
@@ -52,29 +52,25 @@ export function ArticleCard({
   }
 
   return (
-    <article
-      className={`gp-zoom-parent group overflow-hidden rounded-lg border border-edge bg-surface transition-colors hover:border-cyan/40 ${
-        variant === "wide" ? "sm:grid sm:grid-cols-[2fr_3fr]" : ""
-      }`}
-    >
-      <Link href={href} className="block" aria-label={article.title}>
+    <article className="gp-panel group flex h-full flex-col overflow-hidden transition-colors hover:border-cyan/60">
+      <Link href={href} className="block shrink-0" aria-label={article.title}>
         <div className="relative aspect-video overflow-hidden">
           <Image
             src={article.heroImage.src}
             alt={article.heroImage.alt}
             fill
             priority={priority}
-            sizes={variant === "wide" ? "(min-width: 640px) 40vw, 100vw" : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"}
-            className="gp-zoom object-cover"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover"
           />
           {article.isSponsored && (
-            <span className="absolute left-2 top-2 rounded bg-magenta px-2 py-0.5 font-label text-xs font-bold uppercase tracking-wider text-bg">
+            <span className="absolute left-2 top-2 bg-magenta px-2 py-0.5 font-label text-xs font-bold uppercase tracking-wider text-bg">
               Sponsored
             </span>
           )}
         </div>
       </Link>
-      <div className="p-4">
+      <div className="flex flex-1 flex-col p-4">
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <Badge tone={articleTypeTone(article.articleType)}>{typeLabel[article.articleType]}</Badge>
           {article.review && (
@@ -86,7 +82,7 @@ export function ArticleCard({
             {timeAgo(article.publishedAt)}
           </time>
         </div>
-        <h3 className="font-display text-base font-bold leading-snug text-fg transition-colors group-hover:text-cyan sm:text-lg">
+        <h3 className="line-clamp-2 font-display text-base font-bold leading-snug text-fg transition-colors group-hover:text-cyan">
           <Link href={href}>{article.title}</Link>
         </h3>
         <p className="mt-2 line-clamp-2 text-sm text-fg-secondary">{article.excerpt}</p>

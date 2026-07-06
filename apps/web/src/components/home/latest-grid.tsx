@@ -1,21 +1,18 @@
-import { cms } from "@/lib/cms";
-import { ArticleCard } from "@/components/cards/article-card";
+import { getWireArticles } from "@/lib/news-feed";
+import { WireCard } from "@/components/cards/wire-card";
 import { Container, SectionHeading } from "@/components/ui/section";
-import { Reveal } from "@/components/motion/reveal";
 
 export async function LatestGrid({ title, maxItems }: { title: string; maxItems: number }) {
-  const articles = await cms.getArticles({ limit: maxItems });
-  if (articles.length === 0) return null;
+  const items = (await getWireArticles()).slice(0, maxItems);
+  if (items.length === 0) return null;
 
   return (
     <section aria-label={title}>
       <Container>
         <SectionHeading title={title} href="/latest" accent="cyan" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article, index) => (
-            <Reveal key={article.slug} delay={(index % 3) * 0.06}>
-              <ArticleCard article={article} />
-            </Reveal>
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => (
+            <WireCard key={item.id} article={item} />
           ))}
         </div>
       </Container>

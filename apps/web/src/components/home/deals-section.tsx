@@ -14,7 +14,7 @@ export async function DealsSection({ title, maxItems }: { title: string; maxItem
     <section aria-label={title}>
       <Container>
         <SectionHeading title={title} href="/deals" accent="green" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {deals.map((deal, index) => (
             <Reveal key={deal.slug} delay={index * 0.05}>
               <DealCard deal={deal} />

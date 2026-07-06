@@ -16,7 +16,8 @@ export const revalidate = 300;
 /**
  * The homepage is fully CMS-driven: section order, visibility, curation and
  * item counts come from the Homepage Configuration single type. Editors
- * reorder or hide sections without code changes.
+ * reorder or hide sections without code changes. News-related sections pull
+ * from the live RSS wire (see @/lib/news-feed) instead of demo content.
  */
 export default async function HomePage() {
   const sections = await cms.getHomepageSections();
@@ -37,7 +38,7 @@ async function SectionRenderer({ section }: { section: HomepageSection }) {
     case "breaking-ticker":
       return <BreakingTicker maxItems={section.maxItems} />;
     case "hero":
-      return <HeroSection curatedSlugs={section.curatedSlugs} />;
+      return <HeroSection />;
     case "trending":
       return <TrendingSection title={section.title} maxItems={section.maxItems} />;
     case "latest":

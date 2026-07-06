@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function DealCard({ deal }: { deal: Deal }) {
   return (
-    <article className="flex flex-col justify-between rounded-lg border border-edge bg-surface p-4 transition-colors hover:border-signal/50">
+    <article className="gp-panel flex h-full flex-col justify-between p-4 transition-colors hover:border-signal/60">
       <div>
         <div className="flex items-center justify-between gap-2">
           <Badge tone={deal.isFree ? "green" : "cyan"}>{deal.isFree ? "Free" : `-${deal.discountPercent}%`}</Badge>
@@ -31,7 +31,7 @@ export function DealCard({ deal }: { deal: Deal }) {
           rel="nofollow sponsored noopener"
           target="_blank"
           onClick={() => track({ name: "deal_click", slug: deal.slug, retailer: deal.retailer })}
-          className="rounded bg-signal px-3 py-1.5 font-label text-xs font-bold uppercase tracking-wider text-bg transition-transform hover:scale-105"
+          className="bg-signal px-3 py-1.5 font-label text-xs font-bold uppercase tracking-wider text-bg transition-colors hover:bg-cyan"
         >
           Get deal
         </a>

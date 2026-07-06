@@ -31,7 +31,7 @@ export default async function DealsPage() {
       {active.length === 0 ? (
         <EmptyState title="No live deals right now" hint="New deals are added as editors verify them." />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {active.map((deal, index) => (
             <Reveal key={deal.slug} delay={index * 0.05}>
               <DealCard deal={deal} />

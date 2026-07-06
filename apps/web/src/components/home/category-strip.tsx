@@ -24,7 +24,7 @@ export async function CategoryStrip({
     <section aria-label={title}>
       <Container>
         <SectionHeading title={title} href={href} accent={accent} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((article, index) => (
             <Reveal key={article.slug} delay={index * 0.06}>
               <ArticleCard article={article} />

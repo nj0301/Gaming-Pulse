@@ -1,68 +1,65 @@
-import Link from "next/link";
-import { cms } from "@/lib/cms";
+import { timeAgo } from "@gaming-pulse/core";
+import { getTrendingTopics, getWireArticles } from "@/lib/news-feed";
+import { Badge } from "@/components/ui/badge";
 import { Container, SectionHeading } from "@/components/ui/section";
-import { Reveal } from "@/components/motion/reveal";
 
-/** Trending-now cards, each with its required "why is this trending" line. */
+/**
+ * Real trending: topics currently covered by multiple different real outlets
+ * at once (an actual cross-newsroom signal, computed from the live wire —
+ * see getTrendingTopics). If too few cross-outlet topics exist right now,
+ * the freshest single-source headlines fill the remainder, labeled "Just in"
+ * so nothing is presented as trending that isn't.
+ */
 export async function TrendingSection({ title, maxItems }: { title: string; maxItems: number }) {
-  const trends = (await cms.getTrends()).slice(0, maxItems);
-  if (trends.length === 0) return null;
+  const topics = await getTrendingTopics(maxItems);
+  const fillCount = maxItems - topics.length;
+  const recentFill = fillCount > 0 ? (await getWireArticles()).slice(0, fillCount) : [];
+
+  if (topics.length === 0 && recentFill.length === 0) return null;
 
   return (
     <section aria-label={title}>
       <Container>
         <SectionHeading title={title} href="/trending" accent="magenta" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {trends.map((trend, index) => (
-            <Reveal key={trend.slug} delay={index * 0.06}>
-              <article
-                className={`h-full rounded-lg border bg-surface p-5 transition-colors hover:border-magenta/60 ${
-                  trend.pinned ? "border-magenta/50 gp-glow-violet" : "border-edge"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <PulseLine score={trend.score} />
-                  <span className="font-label text-sm font-bold text-magenta">{Math.round(trend.score)}</span>
-                </div>
-                <h3 className="mt-3 font-display text-base font-bold text-fg">
-                  {trend.relatedArticleSlugs[0] ? (
-                    <Link href={`/news/${trend.relatedArticleSlugs[0]}`} className="hover:text-magenta">
-                      {trend.title}
-                    </Link>
-                  ) : (
-                    trend.title
-                  )}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-fg-secondary">
-                  <span className="font-semibold text-fg-muted">Why it&rsquo;s trending: </span>
-                  {trend.whyTrending}
-                </p>
-                {trend.pinned && (
-                  <p className="mt-3 font-label text-xs font-semibold uppercase tracking-wider text-magenta">
-                    Pinned by editorial
-                  </p>
-                )}
-              </article>
-            </Reveal>
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {topics.map((topic) => (
+            <article key={topic.keyword} className="gp-panel gp-panel-magenta flex h-full flex-col p-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-label text-sm font-bold text-magenta">{topic.sourceCount} outlets</span>
+                <span className="h-1 max-w-20 flex-1 bg-surface-elevated">
+                  <span
+                    className="block h-full bg-magenta"
+                    style={{ width: `${Math.min(100, topic.sourceCount * 25)}%` }}
+                  />
+                </span>
+              </div>
+              <h3 className="mt-3 font-display text-base font-bold text-fg">
+                <a href={topic.article.link} target="_blank" rel="noopener nofollow" className="hover:text-magenta">
+                  {topic.keyword}
+                </a>
+              </h3>
+              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-fg-secondary">
+                <span className="font-semibold text-fg-muted">Covered right now by: </span>
+                {topic.sources.join(", ")}
+              </p>
+              <p className="mt-auto pt-3 text-xs text-fg-muted">Latest: {topic.article.title}</p>
+            </article>
+          ))}
+          {recentFill.map((item) => (
+            <article key={item.id} className="gp-panel flex h-full flex-col p-5">
+              <Badge tone="neutral">Just in</Badge>
+              <h3 className="mt-3 font-display text-base font-bold text-fg">
+                <a href={item.link} target="_blank" rel="noopener nofollow" className="hover:text-cyan">
+                  {item.title}
+                </a>
+              </h3>
+              <p className="mt-auto pt-3 text-xs text-fg-muted">
+                {item.sourceName} · {timeAgo(item.publishedAt)}
+              </p>
+            </article>
           ))}
         </div>
       </Container>
     </section>
-  );
-}
-
-function PulseLine({ score }: { score: number }) {
-  const amplitude = 4 + (score / 100) * 8;
-  return (
-    <svg width="80" height="24" viewBox="0 0 80 24" aria-hidden className="text-magenta">
-      <path
-        d={`M0 12 H16 L22 ${12 - amplitude} L30 ${12 + amplitude} L38 ${12 - amplitude * 0.6} L44 12 H80`}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        className="gp-pulse-line"
-      />
-    </svg>
   );
 }

@@ -18,7 +18,11 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob:${cmsHost ? ` https://${cmsHost}` : ""}${mediaCdnHost ? ` https://${mediaCdnHost}` : ""}`,
+  // The news aggregator hotlinks thumbnails directly from many outlets'
+  // own CDNs (Eurogamer, PC Gamer, GameSpot, etc.) with attribution and a
+  // link back to the source — the standard news-aggregator model. That
+  // requires a broad https: allowance here rather than a fixed per-host list.
+  `img-src 'self' data: blob: https:${cmsHost ? ` https://${cmsHost}` : ""}${mediaCdnHost ? ` https://${mediaCdnHost}` : ""}`,
   `media-src 'self'${cmsHost ? ` https://${cmsHost}` : ""}${mediaCdnHost ? ` https://${mediaCdnHost}` : ""}`,
   `connect-src 'self'${process.env.CMS_URL ? ` ${process.env.CMS_URL}` : ""}`,
   "font-src 'self'",
