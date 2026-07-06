@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_home_sections",
+  "info": { "displayName": "Homepage Section", "description": "One orderable, hideable homepage section" },
+  "attributes": {
+    "kind": { "type": "enumeration", "required": true, "enum": ["breaking-ticker", "hero", "trending", "latest", "release-timeline", "platform-pulse", "videos", "insights", "reviews", "esports", "hardware", "deals", "newsletter"] },
+    "title": { "type": "string", "required": true },
+    "enabled": { "type": "boolean", "default": true },
+    "order": { "type": "integer", "required": true },
+    "curatedSlugs": { "type": "json" },
+    "maxItems": { "type": "integer", "default": 6 }
+  }
+}

@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+
+# builds
+.next/
+out/
+dist/
+build/
+.strapi/
+.cache/
+
+# env — never commit secrets
+.env
+.env.*
+!.env.example
+
+# databases (local sqlite dev db)
+*.db
+*.sqlite
+.tmp/
+
+# logs & OS
+npm-debug.log*
+*.log
+.DS_Store
+
+# test artifacts
+coverage/
+playwright-report/
+test-results/
+
+# uploads (local Strapi media)
+apps/cms/public/uploads/*
+!apps/cms/public/uploads/.gitkeep

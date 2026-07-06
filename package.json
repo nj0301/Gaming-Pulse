@@ -1,0 +1,31 @@
+{
+  "name": "gaming-pulse",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Gaming Pulse — premium gaming news, discovery and industry-insight platform",
+  "workspaces": [
+    "apps/web",
+    "apps/cms",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:cms": "npm run develop --workspace apps/cms",
+    "build:web": "npm run build --workspace apps/web",
+    "build:cms": "npm run build --workspace apps/cms",
+    "seed:cms": "npm run seed --workspace apps/cms",
+    "test": "npm run test --workspace packages/core && npm run test --workspace apps/web",
+    "test:e2e": "npm run test:e2e --workspace apps/web",
+    "lint": "npm run lint --workspace apps/web"
+  },
+  "engines": {
+    "node": ">=20 <=24"
+  },
+  "devDependencies": {
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "optionalDependencies": {
+    "lightningcss-darwin-arm64": "^1.32.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": { "singularName": "site-setting", "pluralName": "site-settings", "displayName": "Site Settings" },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "siteName": { "type": "string", "required": true },
+    "tagline": { "type": "string" },
+    "demoNotice": { "type": "text" },
+    "socialLinks": { "type": "json" },
+    "newsletterHeading": { "type": "string" },
+    "newsletterSubheading": { "type": "text" },
+    "defaultSeo": { "type": "component", "component": "shared.seo" }
+  }
+}

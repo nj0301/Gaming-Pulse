@@ -1,0 +1,16 @@
+{
+  "kind": "collectionType",
+  "collectionName": "release_dates",
+  "info": { "singularName": "release-date", "pluralName": "release-dates", "displayName": "Release Date", "description": "One release window for a game, with precision and kind" },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "game": { "type": "relation", "relation": "manyToOne", "target": "api::game.game", "inversedBy": "releaseDates" },
+    "platforms": { "type": "relation", "relation": "manyToMany", "target": "api::platform.platform" },
+    "region": { "type": "enumeration", "enum": ["worldwide", "na", "eu", "jp"], "default": "worldwide" },
+    "date": { "type": "date" },
+    "precision": { "type": "enumeration", "required": true, "default": "tba", "enum": ["exact", "month", "quarter", "year", "tba"] },
+    "kind": { "type": "enumeration", "required": true, "default": "full", "enum": ["full", "early-access", "dlc", "expansion", "remake", "remaster", "port"] },
+    "confirmed": { "type": "boolean", "default": false },
+    "note": { "type": "text" }
+  }
+}

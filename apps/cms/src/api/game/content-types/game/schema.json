@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "games",
+  "info": {
+    "singularName": "game",
+    "pluralName": "games",
+    "displayName": "Game",
+    "description": "Game profile with release data, media and store links"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "name", "required": true },
+    "externalDatabaseId": { "type": "string" },
+    "summary": { "type": "text", "required": true },
+    "description": { "type": "richtext" },
+    "cover": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "heroArtwork": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "screenshots": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
+    "trailers": { "type": "relation", "relation": "manyToMany", "target": "api::video.video", "inversedBy": "games" },
+    "articles": { "type": "relation", "relation": "manyToMany", "target": "api::article.article", "mappedBy": "relatedGames" },
+    "genres": { "type": "relation", "relation": "manyToMany", "target": "api::genre.genre", "inversedBy": "games" },
+    "themes": { "type": "json" },
+    "platforms": { "type": "relation", "relation": "manyToMany", "target": "api::platform.platform", "inversedBy": "games" },
+    "developer": { "type": "relation", "relation": "manyToOne", "target": "api::company.company", "inversedBy": "developedGames" },
+    "publisher": { "type": "relation", "relation": "manyToOne", "target": "api::company.company", "inversedBy": "publishedGames" },
+    "franchise": { "type": "string" },
+    "releaseDates": { "type": "relation", "relation": "oneToMany", "target": "api::release-date.release-date", "mappedBy": "game" },
+    "releaseStatus": { "type": "enumeration", "required": true, "default": "tba", "enum": ["released", "upcoming", "early-access", "tba"] },
+    "ageRatings": { "type": "json" },
+    "gameModes": { "type": "json" },
+    "officialWebsite": { "type": "string" },
+    "storeLinks": { "type": "component", "component": "shared.store-link", "repeatable": true },
+    "trendingScore": { "type": "decimal", "default": 0 },
+    "dataSource": { "type": "enumeration", "enum": ["manual", "manual-demo", "igdb", "mixed"], "default": "manual" },
+    "lastSynchronizedAt": { "type": "datetime" },
+    "editorOverride": { "type": "boolean", "default": false },
+    "seo": { "type": "component", "component": "shared.seo" }
+  }
+}

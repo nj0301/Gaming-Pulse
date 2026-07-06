@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="820" viewBox="0 0 1920 820" role="img" aria-label="Ashen Covenant demo placeholder">
+<defs><linearGradient id="g898103003" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/><stop offset="1" stop-color="#A3E635" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1920" height="820" fill="#101321"/>
+<rect width="1920" height="820" fill="url(#g898103003)"/>
+<line x1="0" y1="697" x2="1920" y2="611" stroke="#A3E635" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="689" x2="1920" y2="605" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="681" x2="1920" y2="599" stroke="#A3E635" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="672" x2="1920" y2="594" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="664" x2="1920" y2="588" stroke="#A3E635" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1920" height="820" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="80" fill="#F8FAFC">Ashen Covenant</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="44" fill="#A8B0C5">DEMO ART — key art</text>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_sources",
+  "info": { "displayName": "Source", "description": "Citation with authority level and verification status" },
+  "attributes": {
+    "publisher": { "type": "string", "required": true },
+    "sourceUrl": { "type": "string", "required": true },
+    "sourceType": { "type": "enumeration", "required": true, "enum": ["official-blog", "press-release", "interview", "social-post", "news-report", "store-listing", "video", "financial-filing"] },
+    "originalPublicationDate": { "type": "datetime" },
+    "accessedAt": { "type": "datetime" },
+    "authorityLevel": { "type": "integer", "min": 1, "max": 5, "default": 3 },
+    "officialSource": { "type": "boolean", "default": false },
+    "verifiedBy": { "type": "string" },
+    "notes": { "type": "text" }
+  }
+}

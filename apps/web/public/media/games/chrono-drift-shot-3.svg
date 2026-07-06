@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Chrono Drift demo placeholder">
+<defs><linearGradient id="g67481915" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EC4899" stop-opacity="0.55"/><stop offset="1" stop-color="#F59E0B" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1280" height="720" fill="#101321"/>
+<rect width="1280" height="720" fill="url(#g67481915)"/>
+<line x1="0" y1="259" x2="1280" y2="289" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="252" x2="1280" y2="284" stroke="#EC4899" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="245" x2="1280" y2="279" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="238" x2="1280" y2="274" stroke="#EC4899" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="230" x2="1280" y2="269" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1280" height="720" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="53" fill="#F8FAFC">Chrono Drift</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="29" fill="#A8B0C5">DEMO ART — screenshot 3</text>
+</svg>

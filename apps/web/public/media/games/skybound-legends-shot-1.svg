@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Skybound Legends demo placeholder">
+<defs><linearGradient id="g1944284868" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/><stop offset="1" stop-color="#A3E635" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1280" height="720" fill="#101321"/>
+<rect width="1280" height="720" fill="url(#g1944284868)"/>
+<line x1="0" y1="396" x2="1280" y2="385" stroke="#A3E635" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="389" x2="1280" y2="380" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="382" x2="1280" y2="375" stroke="#A3E635" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="374" x2="1280" y2="370" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="367" x2="1280" y2="365" stroke="#A3E635" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1280" height="720" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="53" fill="#F8FAFC">Skybound Legends</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="29" fill="#A8B0C5">DEMO ART — screenshot 1</text>
+</svg>

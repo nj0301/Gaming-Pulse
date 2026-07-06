@@ -1,0 +1,32 @@
+# Production-like local stack: PostgreSQL (+ optional Redis) for the CMS.
+# Local development works without this (Strapi defaults to SQLite).
+#
+#   docker compose up -d postgres
+#   # then in apps/cms/.env: DATABASE_CLIENT=postgres, DATABASE_URL=postgres://strapi:strapi@localhost:5432/gaming_pulse
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: gaming_pulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d gaming_pulse"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    profiles: ["full"]
+
+volumes:
+  pgdata:

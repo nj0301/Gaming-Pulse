@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_shared_review_data",
+  "info": { "displayName": "Review Data", "description": "Structured review verdict attached to review-type articles" },
+  "attributes": {
+    "score": { "type": "decimal", "min": 0, "max": 10, "required": true },
+    "verdict": { "type": "text", "required": true },
+    "pros": { "type": "json" },
+    "cons": { "type": "json" },
+    "reviewedOnPlatform": { "type": "string" },
+    "copyProvidedBy": { "type": "string", "required": true }
+  }
+}

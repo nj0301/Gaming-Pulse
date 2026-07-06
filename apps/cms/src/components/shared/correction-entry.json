@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_shared_correction_entries",
+  "info": { "displayName": "Correction Entry", "description": "One entry in an article's update and correction log" },
+  "attributes": {
+    "date": { "type": "datetime", "required": true },
+    "note": { "type": "text", "required": true }
+  }
+}

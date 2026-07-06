@@ -1,0 +1,11 @@
+{
+  "kind": "collectionType",
+  "collectionName": "genres",
+  "info": { "singularName": "genre", "pluralName": "genres", "displayName": "Genre" },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "name", "required": true },
+    "games": { "type": "relation", "relation": "manyToMany", "target": "api::game.game", "mappedBy": "genres" }
+  }
+}

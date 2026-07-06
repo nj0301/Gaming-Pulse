@@ -1,0 +1,15 @@
+{
+  "name": "@gaming-pulse/seed-data",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "description": "Fictional demo content for Gaming Pulse. Every studio, game, date, score and story in this package is invented for demonstration purposes.",
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

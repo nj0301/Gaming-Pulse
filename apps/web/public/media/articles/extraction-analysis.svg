@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Analysis demo placeholder">
+<defs><linearGradient id="g1585066015" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/><stop offset="1" stop-color="#8B5CF6" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#101321"/>
+<rect width="1600" height="900" fill="url(#g1585066015)"/>
+<line x1="0" y1="864" x2="1600" y2="740" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="873" x2="1600" y2="746" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="882" x2="1600" y2="752" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="891" x2="1600" y2="759" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="0" x2="1600" y2="135" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1600" height="900" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="67" fill="#F8FAFC">Analysis</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="37" fill="#A8B0C5">DEMO ART — editorial</text>
+</svg>

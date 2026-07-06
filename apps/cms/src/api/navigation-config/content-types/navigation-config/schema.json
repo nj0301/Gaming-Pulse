@@ -1,0 +1,10 @@
+{
+  "kind": "singleType",
+  "collectionName": "navigation_configs",
+  "info": { "singularName": "navigation-config", "pluralName": "navigation-configs", "displayName": "Navigation Configuration" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "primary": { "type": "component", "component": "shared.nav-item", "repeatable": true },
+    "footer": { "type": "component", "component": "shared.nav-item", "repeatable": true }
+  }
+}

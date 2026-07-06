@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="820" viewBox="0 0 1920 820" role="img" aria-label="Petal &amp; Blade demo placeholder">
+<defs><linearGradient id="g2132897490" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/><stop offset="1" stop-color="#8B5CF6" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1920" height="820" fill="#101321"/>
+<rect width="1920" height="820" fill="url(#g2132897490)"/>
+<line x1="0" y1="131" x2="1920" y2="215" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="123" x2="1920" y2="209" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="115" x2="1920" y2="203" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="107" x2="1920" y2="198" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="98" x2="1920" y2="192" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1920" height="820" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="80" fill="#F8FAFC">Petal &amp; Blade</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="44" fill="#A8B0C5">DEMO ART — key art</text>
+</svg>

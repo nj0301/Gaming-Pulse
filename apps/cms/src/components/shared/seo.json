@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_shared_seo",
+  "info": { "displayName": "SEO", "description": "Per-entry search and social metadata" },
+  "attributes": {
+    "seoTitle": { "type": "string", "maxLength": 70 },
+    "seoDescription": { "type": "text", "maxLength": 170 },
+    "canonicalUrl": { "type": "string" },
+    "openGraphImage": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "noIndex": { "type": "boolean", "default": false }
+  }
+}

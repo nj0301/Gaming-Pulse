@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="SK demo placeholder">
+<defs><linearGradient id="g78936315" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EC4899" stop-opacity="0.55"/><stop offset="1" stop-color="#F59E0B" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="256" height="256" fill="#101321"/>
+<rect width="256" height="256" fill="url(#g78936315)"/>
+<line x1="0" y1="92" x2="256" y2="103" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="95" x2="256" y2="105" stroke="#EC4899" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="97" x2="256" y2="106" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="100" x2="256" y2="108" stroke="#EC4899" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="102" x2="256" y2="110" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="256" height="256" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="#F8FAFC">SK</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#A8B0C5">DEMO</text>
+</svg>

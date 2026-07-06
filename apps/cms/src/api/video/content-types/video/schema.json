@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "videos",
+  "info": { "singularName": "video", "pluralName": "videos", "displayName": "Video", "description": "Trailers, gameplay and interviews" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "kind": { "type": "enumeration", "enum": ["trailer", "gameplay", "interview", "showcase"], "default": "trailer" },
+    "provider": { "type": "enumeration", "enum": ["demo-local", "youtube", "upload"], "default": "demo-local" },
+    "externalId": { "type": "string" },
+    "poster": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "file": { "type": "media", "multiple": false, "allowedTypes": ["videos"] },
+    "durationSeconds": { "type": "integer" },
+    "description": { "type": "text" },
+    "relatedGame": { "type": "relation", "relation": "manyToOne", "target": "api::game.game" },
+    "games": { "type": "relation", "relation": "manyToMany", "target": "api::game.game", "mappedBy": "trailers" },
+    "articles": { "type": "relation", "relation": "manyToMany", "target": "api::article.article", "mappedBy": "videos" }
+  }
+}

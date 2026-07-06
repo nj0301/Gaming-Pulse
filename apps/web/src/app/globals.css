@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+/* ── Gaming Pulse design tokens ─────────────────────────────────────────── */
+:root {
+  --background-primary: #080a12;
+  --background-secondary: #101321;
+  --surface: #161a2b;
+  --surface-elevated: #1d2236;
+  --cyan: #22d3ee;
+  --violet: #8b5cf6;
+  --magenta: #ec4899;
+  --signal-green: #a3e635;
+  --warning: #f59e0b;
+  --text-primary: #f8fafc;
+  --text-secondary: #a8b0c5;
+  --text-muted: #737c96;
+  --border: #2a3047;
+}
+
+@theme inline {
+  --color-bg: var(--background-primary);
+  --color-bg-secondary: var(--background-secondary);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-cyan: var(--cyan);
+  --color-violet: var(--violet);
+  --color-magenta: var(--magenta);
+  --color-signal: var(--signal-green);
+  --color-warning: var(--warning);
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-muted: var(--text-muted);
+  --color-edge: var(--border);
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-label: var(--font-rajdhani), var(--font-inter), sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus visibility: high-contrast ring on every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--violet) 45%, transparent);
+}
+
+/* ── Effects control ────────────────────────────────────────────────────────
+   Decorative animation is gated twice:
+   1. prefers-reduced-motion (system-level)
+   2. [data-effects="reduced"] on <html> (site-level "Reduce effects" toggle) */
+[data-effects="reduced"] *,
+[data-effects="reduced"] *::before,
+[data-effects="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Subtle grid backdrop used by hero sections; pure CSS, zero JS cost. */
+.gp-grid-bg {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 40%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+}
+
+/* Animated mesh gradient for the hero. Transform/opacity only. */
+.gp-mesh {
+  background:
+    radial-gradient(40% 55% at 20% 30%, color-mix(in srgb, var(--violet) 22%, transparent), transparent),
+    radial-gradient(45% 50% at 80% 20%, color-mix(in srgb, var(--cyan) 16%, transparent), transparent),
+    radial-gradient(50% 60% at 60% 85%, color-mix(in srgb, var(--magenta) 12%, transparent), transparent);
+  animation: gp-mesh-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes gp-mesh-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(2%, 1%, 0) scale(1.08);
+  }
+}
+
+/* Trending pulse line. */
+@keyframes gp-pulse-dash {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+.gp-pulse-line {
+  stroke-dasharray: 140 60;
+  animation: gp-pulse-dash 3.2s linear infinite;
+}
+
+/* Breaking ticker marquee (transform-only; pausable on hover/focus). */
+@keyframes gp-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.gp-ticker-track {
+  animation: gp-ticker 36s linear infinite;
+}
+.gp-ticker-track:hover,
+.gp-ticker-track:focus-within {
+  animation-play-state: paused;
+}
+
+/* Skeleton shimmer. */
+@keyframes gp-shimmer {
+  from {
+    background-position: -400px 0;
+  }
+  to {
+    background-position: 400px 0;
+  }
+}
+.gp-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface-elevated) 50%,
+    var(--surface) 75%
+  );
+  background-size: 800px 100%;
+  animation: gp-shimmer 1.6s linear infinite;
+}
+
+/* Card image zoom on hover — GPU transform only, disabled for touch. */
+@media (hover: hover) {
+  .gp-zoom-parent .gp-zoom {
+    transition: transform 0.5s cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+  .gp-zoom-parent:hover .gp-zoom {
+    transform: scale(1.05);
+  }
+}
+
+/* Selective glow — active/trending/interactive states only. */
+.gp-glow-cyan {
+  box-shadow: 0 0 24px -6px color-mix(in srgb, var(--cyan) 55%, transparent);
+}
+.gp-glow-violet {
+  box-shadow: 0 0 24px -6px color-mix(in srgb, var(--violet) 55%, transparent);
+}
+
+/* Prose styles for article bodies. */
+.gp-prose {
+  color: var(--text-secondary);
+  line-height: 1.75;
+  font-size: 1.0625rem;
+}
+.gp-prose h2 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+}
+.gp-prose h3 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+.gp-prose p {
+  margin: 1rem 0;
+}
+.gp-prose a {
+  color: var(--cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gp-prose strong {
+  color: var(--text-primary);
+}
+.gp-prose ul,
+.gp-prose ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+.gp-prose ul {
+  list-style: disc;
+}
+.gp-prose ol {
+  list-style: decimal;
+}
+.gp-prose li {
+  margin: 0.35rem 0;
+}
+.gp-prose blockquote {
+  border-left: 3px solid var(--violet);
+  background: var(--surface);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.gp-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+}
+.gp-prose th,
+.gp-prose td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+}
+.gp-prose th {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+}
+.gp-prose code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.875em;
+}
+.gp-prose hr {
+  border-color: var(--border);
+  margin: 2rem 0;
+}

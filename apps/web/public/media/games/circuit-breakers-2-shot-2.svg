@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Circuit Breakers 2 demo placeholder">
+<defs><linearGradient id="g715931657" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE" stop-opacity="0.55"/><stop offset="1" stop-color="#8B5CF6" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1280" height="720" fill="#101321"/>
+<rect width="1280" height="720" fill="url(#g715931657)"/>
+<line x1="0" y1="86" x2="1280" y2="168" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="94" x2="1280" y2="174" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="101" x2="1280" y2="179" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="108" x2="1280" y2="184" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="115" x2="1280" y2="189" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1280" height="720" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="53" fill="#F8FAFC">Circuit Breakers 2</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="29" fill="#A8B0C5">DEMO ART — screenshot 2</text>
+</svg>

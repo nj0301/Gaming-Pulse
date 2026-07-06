@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deals",
+  "info": { "singularName": "deal", "pluralName": "deals", "displayName": "Deal", "description": "Free games and discounts, human-checked" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "game": { "type": "relation", "relation": "manyToOne", "target": "api::game.game" },
+    "retailer": { "type": "string", "required": true },
+    "url": { "type": "string", "required": true },
+    "price": { "type": "decimal" },
+    "originalPrice": { "type": "decimal" },
+    "currency": { "type": "string", "default": "USD" },
+    "discountPercent": { "type": "integer" },
+    "isFree": { "type": "boolean", "default": false },
+    "startsAt": { "type": "datetime" },
+    "endsAt": { "type": "datetime" },
+    "platforms": { "type": "relation", "relation": "manyToMany", "target": "api::platform.platform" },
+    "note": { "type": "text" }
+  }
+}

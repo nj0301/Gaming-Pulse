@@ -1,0 +1,9 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepage_configs",
+  "info": { "singularName": "homepage-config", "pluralName": "homepage-configs", "displayName": "Homepage Configuration", "description": "Section order, visibility and curation for the homepage" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "sections": { "type": "component", "component": "home.section", "repeatable": true }
+  }
+}

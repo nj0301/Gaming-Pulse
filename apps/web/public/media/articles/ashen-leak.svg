@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Leak Coverage demo placeholder">
+<defs><linearGradient id="g476088726" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A3E635" stop-opacity="0.55"/><stop offset="1" stop-color="#22D3EE" stop-opacity="0.35"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#101321"/>
+<rect width="1600" height="900" fill="url(#g476088726)"/>
+<line x1="0" y1="441" x2="1600" y2="444" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="432" x2="1600" y2="437" stroke="#A3E635" stroke-opacity="0.18" stroke-width="2"/><line x1="0" y1="423" x2="1600" y2="431" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="3"/><line x1="0" y1="414" x2="1600" y2="425" stroke="#A3E635" stroke-opacity="0.18" stroke-width="1"/><line x1="0" y1="405" x2="1600" y2="419" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/>
+<rect x="0" y="0" width="1600" height="900" fill="none" stroke="#2A3047" stroke-width="2"/>
+<text x="50%" y="48%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="67" fill="#F8FAFC">Leak Coverage</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="37" fill="#A8B0C5">DEMO ART — editorial</text>
+</svg>

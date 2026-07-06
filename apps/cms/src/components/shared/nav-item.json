@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_shared_nav_items",
+  "info": { "displayName": "Nav Item" },
+  "attributes": {
+    "label": { "type": "string", "required": true },
+    "href": { "type": "string", "required": true },
+    "children": { "type": "component", "component": "shared.nav-child", "repeatable": true }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Article",
+    "description": "Editorial content: news, reviews, guides, opinion, analysis and more"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true, "maxLength": 140 },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "subtitle": { "type": "text" },
+    "excerpt": { "type": "text", "required": true, "maxLength": 300 },
+    "body": { "type": "richtext", "required": true },
+    "articleType": {
+      "type": "enumeration",
+      "required": true,
+      "enum": ["breaking", "news", "official-announcement", "report", "rumor", "leak", "review", "guide", "opinion", "analysis", "interview", "feature", "sponsored"]
+    },
+    "factStatus": {
+      "type": "enumeration",
+      "required": true,
+      "default": "reported",
+      "enum": ["confirmed", "reported", "unconfirmed", "rumor", "opinion"]
+    },
+    "category": { "type": "relation", "relation": "manyToOne", "target": "api::category.category", "inversedBy": "articles" },
+    "platforms": { "type": "relation", "relation": "manyToMany", "target": "api::platform.platform", "inversedBy": "articles" },
+    "relatedGames": { "type": "relation", "relation": "manyToMany", "target": "api::game.game", "inversedBy": "articles" },
+    "tags": { "type": "relation", "relation": "manyToMany", "target": "api::tag.tag", "inversedBy": "articles" },
+    "author": { "type": "relation", "relation": "manyToOne", "target": "api::author.author", "inversedBy": "articles" },
+    "reviewer": { "type": "relation", "relation": "manyToOne", "target": "api::author.author" },
+    "heroMedia": { "type": "media", "multiple": false, "allowedTypes": ["images", "videos"] },
+    "heroCaption": { "type": "string" },
+    "heroCredit": { "type": "string" },
+    "gallery": { "type": "component", "component": "shared.gallery-item", "repeatable": true },
+    "videos": { "type": "relation", "relation": "manyToMany", "target": "api::video.video", "inversedBy": "articles" },
+    "sources": { "type": "component", "component": "shared.source", "repeatable": true },
+    "keyPoints": { "type": "json" },
+    "confirmedFacts": { "type": "json" },
+    "unconfirmedPoints": { "type": "json" },
+    "correctionLog": { "type": "component", "component": "shared.correction-entry", "repeatable": true },
+    "review": { "type": "component", "component": "shared.review-data" },
+    "isBreaking": { "type": "boolean", "default": false },
+    "isFeatured": { "type": "boolean", "default": false },
+    "isSponsored": { "type": "boolean", "default": false },
+    "sponsorName": { "type": "string" },
+    "aiAssisted": { "type": "boolean", "default": false },
+    "humanReviewed": { "type": "boolean", "default": false },
+    "readingTime": { "type": "integer" },
+    "newsletterPlacement": { "type": "enumeration", "enum": ["none", "inline", "footer"], "default": "none" },
+    "seo": { "type": "component", "component": "shared.seo" }
+  }
+}
