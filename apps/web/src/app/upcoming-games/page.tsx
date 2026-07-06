@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getUpcomingGames, isRawgEnabled } from "@/lib/rawg";
+import Link from "next/link";
+import { getUpcomingGamesPage, isRawgEnabled } from "@/lib/rawg";
 import { Container, EmptyState } from "@/components/ui/section";
 import { UpcomingList } from "@/components/games/upcoming-list";
 
@@ -11,8 +12,17 @@ export const metadata: Metadata = {
   alternates: { canonical: "/upcoming-games" },
 };
 
-export default async function UpcomingGamesPage() {
-  const games = isRawgEnabled() ? await getUpcomingGames(60) : [];
+function parsePage(value: string | undefined): number {
+  const page = Number(value ?? "1");
+  return Number.isInteger(page) && page > 0 ? page : 1;
+}
+
+export default async function UpcomingGamesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageParam } = await searchParams;
+  const page = parsePage(pageParam);
+  const { games, hasNextPage, hasPreviousPage } = isRawgEnabled()
+    ? await getUpcomingGamesPage(page, 40)
+    : { games: [], hasNextPage: false, hasPreviousPage: false };
 
   return (
     <Container className="py-10">
@@ -30,7 +40,37 @@ export default async function UpcomingGamesPage() {
           }
         />
       ) : (
-        <UpcomingList games={games} />
+        <>
+          <UpcomingList games={games} />
+
+          {(page > 1 || hasNextPage) && (
+            <nav aria-label="Pagination" className="mt-10 flex items-center justify-between">
+              {page > 1 && hasPreviousPage ? (
+                <Link
+                  href={`/upcoming-games${page - 1 > 1 ? `?page=${page - 1}` : ""}`}
+                  rel="prev"
+                  className="border border-edge bg-surface px-4 py-2 font-label text-sm font-semibold uppercase tracking-wider text-fg-secondary hover:text-cyan"
+                >
+                  ← Sooner
+                </Link>
+              ) : (
+                <span aria-hidden />
+              )}
+              <span className="text-sm text-fg-muted">Page {page}</span>
+              {hasNextPage ? (
+                <Link
+                  href={`/upcoming-games?page=${page + 1}`}
+                  rel="next"
+                  className="border border-edge bg-surface px-4 py-2 font-label text-sm font-semibold uppercase tracking-wider text-fg-secondary hover:text-cyan"
+                >
+                  Later →
+                </Link>
+              ) : (
+                <span aria-hidden />
+              )}
+            </nav>
+          )}
+        </>
       )}
     </Container>
   );

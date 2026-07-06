@@ -116,6 +116,33 @@ export async function getPopularGames(limit = 20): Promise<RawgGame[]> {
   return data?.results.map(mapListItem) ?? [];
 }
 
+export interface RawgGamePage {
+  games: RawgGame[];
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+/**
+ * Real, currently-popular games with pagination. RAWG's page_size caps at
+ * 40 per request, so browsing beyond that goes through `page` instead of a
+ * bigger page_size.
+ */
+export async function getPopularGamesPage(page = 1, pageSize = 40): Promise<RawgGamePage> {
+  const data = await rawgFetch<{ results: RawgListItem[]; next: string | null; previous: string | null }>(
+    "/games",
+    {
+      page_size: String(pageSize),
+      page: String(Math.max(1, page)),
+      ordering: "-added",
+    },
+  );
+  return {
+    games: data?.results.map(mapListItem) ?? [],
+    hasNextPage: Boolean(data?.next),
+    hasPreviousPage: Boolean(data?.previous),
+  };
+}
+
 /** Real upcoming releases, ordered by release date. */
 export async function getUpcomingGames(limit = 40): Promise<RawgGame[]> {
   const today = new Date().toISOString().slice(0, 10);
@@ -126,6 +153,26 @@ export async function getUpcomingGames(limit = 40): Promise<RawgGame[]> {
     dates: `${today},${future}`,
   });
   return data?.results.map(mapListItem) ?? [];
+}
+
+/** Real upcoming releases with pagination — same real dates, paged instead of one big list. */
+export async function getUpcomingGamesPage(page = 1, pageSize = 40): Promise<RawgGamePage> {
+  const today = new Date().toISOString().slice(0, 10);
+  const future = new Date(Date.now() + 365 * 86_400_000).toISOString().slice(0, 10);
+  const data = await rawgFetch<{ results: RawgListItem[]; next: string | null; previous: string | null }>(
+    "/games",
+    {
+      page_size: String(pageSize),
+      page: String(Math.max(1, page)),
+      ordering: "released",
+      dates: `${today},${future}`,
+    },
+  );
+  return {
+    games: data?.results.map(mapListItem) ?? [],
+    hasNextPage: Boolean(data?.next),
+    hasPreviousPage: Boolean(data?.previous),
+  };
 }
 
 interface RawgDetail {
