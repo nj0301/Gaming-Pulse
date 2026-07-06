@@ -1,16 +1,15 @@
 "use client";
 
 /**
- * Site header: desktop mega navigation with platform submenu, mobile drawer,
- * full-screen search overlay, newsletter CTA, effects toggle, and a sticky
- * bar that compacts after scrolling. Fully keyboard-accessible.
+ * Site header: desktop navigation, mobile drawer, full-screen search
+ * overlay, newsletter CTA, and a sticky bar that compacts after scrolling.
+ * Fully keyboard-accessible.
  */
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { NavItem } from "@/lib/cms/types";
-import { useEffects } from "@/components/motion/effects-provider";
 import { SearchOverlay } from "./search-overlay";
 
 export function Header({ primaryNav }: { primaryNav: NavItem[] }) {
@@ -19,7 +18,6 @@ export function Header({ primaryNav }: { primaryNav: NavItem[] }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-  const { userReduced, toggle } = useEffects();
   const navId = useId();
   const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -167,17 +165,6 @@ export function Header({ primaryNav }: { primaryNav: NavItem[] }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
-            {/* Effects toggle */}
-            <button
-              type="button"
-              onClick={toggle}
-              aria-pressed={userReduced}
-              title={userReduced ? "Enable visual effects" : "Reduce visual effects"}
-              className="hidden rounded border border-edge px-2.5 py-1.5 font-label text-xs font-semibold uppercase tracking-wider text-fg-muted transition-colors hover:text-fg sm:block"
-            >
-              {userReduced ? "FX off" : "FX on"}
-            </button>
-
             {/* Search */}
             <button
               type="button"
@@ -271,14 +258,6 @@ export function Header({ primaryNav }: { primaryNav: NavItem[] }) {
               >
                 Get the Briefing
               </Link>
-              <button
-                type="button"
-                onClick={toggle}
-                aria-pressed={userReduced}
-                className="w-full rounded border border-edge px-4 py-2.5 font-label text-sm font-semibold uppercase tracking-wider text-fg-muted"
-              >
-                {userReduced ? "Enable effects" : "Reduce effects"}
-              </button>
             </div>
           </div>
         </div>

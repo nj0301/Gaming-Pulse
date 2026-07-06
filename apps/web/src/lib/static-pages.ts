@@ -32,9 +32,7 @@ We don't publish original reporting, reviews, or opinion pieces, and we don't at
     slug: "contact",
     title: "Contact",
     description: "How to reach Gaming Pulse.",
-    body: `**Placeholder addresses** — replace before production use.
-
-- **General:** hello@example.com
+    body: `- **General:** vincent.dubai159@gmail.com
 - **Advertising & partnerships:** see [advertise](/advertise).
 
 If you're an outlet whose feed appears on this site and have a question about attribution or want to be removed, use the address above.`,

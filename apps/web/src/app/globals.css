@@ -66,19 +66,8 @@ body {
   background: color-mix(in srgb, var(--cyan) 35%, transparent);
 }
 
-/* ── Effects control ────────────────────────────────────────────────────────
-   Kept for accessibility (WCAG reduced-motion): a handful of functional UI
-   transitions remain (menu/search open, tab switch); this mutes them.
-   1. prefers-reduced-motion (system-level)
-   2. [data-effects="reduced"] on <html> (site-level "Reduce effects" toggle) */
-[data-effects="reduced"] *,
-[data-effects="reduced"] *::before,
-[data-effects="reduced"] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-
+/* Respect the OS-level reduced-motion preference for the few remaining
+   functional UI transitions (menu/search open, tab switch). */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

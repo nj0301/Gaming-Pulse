@@ -215,7 +215,6 @@ export interface SeedTrend {
 }
 
 export type HomepageSectionKind =
-  | "breaking-ticker"
   | "hero"
   | "trending"
   | "latest"

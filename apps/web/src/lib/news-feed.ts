@@ -68,6 +68,24 @@ function extractTag(block: string, tag: string): string | null {
   return match ? stripCdata(match[1]).trim() : null;
 }
 
+/**
+ * Hosts whose CDN actively challenges hotlinked image requests (Cloudflare
+ * bot-management "cf-mitigated: challenge", confirmed by hand) rather than
+ * simply denying them. There's no honest way to satisfy a JS challenge from
+ * a plain <img> tag or a server-side fetch, so we don't try — we just skip
+ * the image and fall back to the source-attributed placeholder tile, same
+ * as when an outlet's feed provides no image at all.
+ */
+const HOTLINK_BLOCKED_HOSTS = new Set(["images.nintendolife.com"]);
+
+function isHotlinkBlocked(url: string): boolean {
+  try {
+    return HOTLINK_BLOCKED_HOSTS.has(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 function extractImage(block: string): string | null {
   // Try media:content, then enclosure, then the first <img> inside description/content.
   const media = /<media:content[^>]*url="([^"]+)"/i.exec(block);
@@ -90,13 +108,14 @@ function parseFeed(xml: string, source: FeedSource): WireArticle[] {
     const description = extractTag(block, "description") ?? "";
     const pubDate = extractTag(block, "pubDate");
     const publishedAt = pubDate ? new Date(pubDate).toISOString() : new Date().toISOString();
+    const image = extractImage(block);
 
     items.push({
       id: link,
       title: decodeEntities(rawTitle),
       excerpt: stripHtml(description).slice(0, 220),
       link,
-      imageUrl: extractImage(block),
+      imageUrl: image && !isHotlinkBlocked(image) ? image : null,
       sourceName: source.name,
       publishedAt,
     });

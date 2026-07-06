@@ -6,12 +6,11 @@ import type { SeedHomepageSection, SeedNavItem, SeedSiteSettings } from "./types
  * Only real-data sections exist: news comes from the live RSS wire, games from RAWG.
  */
 export const homepageSections: SeedHomepageSection[] = [
-  { kind: "breaking-ticker", title: "Breaking", enabled: true, order: 1, curatedSlugs: [], maxItems: 5 },
-  { kind: "hero", title: "Featured", enabled: true, order: 2, curatedSlugs: [], maxItems: 1 },
-  { kind: "trending", title: "Trending Now", enabled: true, order: 3, curatedSlugs: [], maxItems: 6 },
-  { kind: "latest", title: "Latest News", enabled: true, order: 4, curatedSlugs: [], maxItems: 9 },
-  { kind: "upcoming-releases", title: "Upcoming Releases", enabled: true, order: 5, curatedSlugs: [], maxItems: 10 },
-  { kind: "newsletter", title: "The Pulse Briefing", enabled: true, order: 6, curatedSlugs: [], maxItems: 0 },
+  { kind: "hero", title: "Featured", enabled: true, order: 1, curatedSlugs: [], maxItems: 1 },
+  { kind: "trending", title: "Trending Now", enabled: true, order: 2, curatedSlugs: [], maxItems: 6 },
+  { kind: "latest", title: "Latest News", enabled: true, order: 3, curatedSlugs: [], maxItems: 9 },
+  { kind: "upcoming-releases", title: "Upcoming Releases", enabled: true, order: 4, curatedSlugs: [], maxItems: 10 },
+  { kind: "newsletter", title: "The Pulse Briefing", enabled: true, order: 5, curatedSlugs: [], maxItems: 0 },
 ];
 
 /** Navigation configuration — mirrors the CMS "Navigation Configuration" single type. */

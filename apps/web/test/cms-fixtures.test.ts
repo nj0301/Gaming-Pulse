@@ -27,7 +27,7 @@ describe("fixture CMS adapter (site configuration only)", () => {
     const orders = sections.map((s) => s.order);
     expect([...orders].sort((a, b) => a - b)).toEqual(orders);
 
-    const realDataKinds = ["breaking-ticker", "hero", "trending", "latest", "upcoming-releases", "newsletter"];
+    const realDataKinds = ["hero", "trending", "latest", "upcoming-releases", "newsletter"];
     for (const section of sections) {
       expect(realDataKinds).toContain(section.kind);
     }

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Rajdhani, Space_Grotesk } from "next/font/google";
 import { getNavigation, getSiteSettings } from "@/lib/cms";
 import { SITE_NAME, SITE_URL } from "@/lib/config";
-import { EffectsProvider } from "@/components/motion/effects-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { organizationJsonLd } from "@/lib/seo/jsonld";
@@ -45,14 +44,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const [navigation, settings] = await Promise.all([getNavigation(), getSiteSettings()]);
 
   return (
-    <html lang="en" data-effects="full">
+    <html lang="en">
       <body className={`${spaceGrotesk.variable} ${inter.variable} ${rajdhani.variable}`}>
         <JsonLd data={organizationJsonLd()} />
-        <EffectsProvider>
-          <Header primaryNav={navigation.primary} />
-          <main id="main-content">{children}</main>
-          <Footer footerNav={navigation.footer} settings={settings} />
-        </EffectsProvider>
+        <Header primaryNav={navigation.primary} />
+        <main id="main-content">{children}</main>
+        <Footer footerNav={navigation.footer} settings={settings} />
       </body>
     </html>
   );

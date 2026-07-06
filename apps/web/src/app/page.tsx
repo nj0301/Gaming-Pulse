@@ -1,6 +1,5 @@
 import { cms } from "@/lib/cms";
 import type { HomepageSection } from "@/lib/cms/types";
-import { BreakingTicker } from "@/components/home/breaking-ticker";
 import { HeroSection } from "@/components/home/hero-section";
 import { TrendingSection } from "@/components/home/trending-section";
 import { LatestGrid } from "@/components/home/latest-grid";
@@ -30,8 +29,6 @@ export default async function HomePage() {
 
 async function SectionRenderer({ section }: { section: HomepageSection }) {
   switch (section.kind) {
-    case "breaking-ticker":
-      return <BreakingTicker maxItems={section.maxItems} />;
     case "hero":
       return <HeroSection />;
     case "trending":

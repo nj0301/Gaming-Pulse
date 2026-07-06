@@ -8,19 +8,11 @@
  */
 
 export type AnalyticsEvent =
-  | { name: "article_view"; slug: string; articleType: string }
-  | { name: "scroll_depth"; slug: string; percent: 25 | 50 | 75 | 100 }
-  | { name: "related_story_click"; fromSlug: string; toSlug: string }
-  | { name: "game_view"; slug: string }
   | { name: "release_filter"; filter: string; value: string }
-  | { name: "trailer_play"; slug: string }
   | { name: "newsletter_signup"; placement: string }
   | { name: "search_query"; queryLength: number }
   | { name: "search_result_click"; resultType: string; slug: string }
-  | { name: "deal_click"; slug: string; retailer: string }
-  | { name: "outbound_store_click"; gameSlug: string; store: string }
-  | { name: "share"; slug: string; channel: string }
-  | { name: "effects_toggle"; reduced: boolean };
+  | { name: "outbound_store_click"; gameSlug: string; store: string };
 
 declare global {
   interface Window {
