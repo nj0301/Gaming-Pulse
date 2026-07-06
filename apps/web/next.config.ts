@@ -4,15 +4,19 @@ import path from "node:path";
 const cmsHost = process.env.CMS_URL ? new URL(process.env.CMS_URL).hostname : null;
 const mediaCdnHost = process.env.MEDIA_CDN_HOST || null;
 
+const isDev = process.env.NODE_ENV === "development";
+
 /**
  * Content-Security-Policy.
  * 'unsafe-inline' for styles is required by streamed inline styles;
  * script-src allows self + inline bootstrap only (Next generates hashed
  * inline scripts; strict nonces can be layered in middleware later).
+ * 'unsafe-eval' is added in development only — React dev mode uses eval()
+ * for debugging features; production builds never do.
  */
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob:${cmsHost ? ` https://${cmsHost}` : ""}${mediaCdnHost ? ` https://${mediaCdnHost}` : ""}`,
   `media-src 'self'${cmsHost ? ` https://${cmsHost}` : ""}${mediaCdnHost ? ` https://${mediaCdnHost}` : ""}`,
