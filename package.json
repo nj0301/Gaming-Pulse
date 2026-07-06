@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "node scripts/ensure-native-css-deps.mjs",
     "dev:web": "npm run dev --workspace apps/web",
     "dev:cms": "npm run develop --workspace apps/cms",
     "build:web": "npm run build --workspace apps/web",
