@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const cmsHost = process.env.CMS_URL ? new URL(process.env.CMS_URL).hostname : null;
 const mediaCdnHost = process.env.MEDIA_CDN_HOST || null;
@@ -31,6 +32,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Monorepo: without this, Turbopack infers the wrong workspace root and
+  // fails to resolve native binaries (lightningcss) hoisted to the root.
+  turbopack: {
+    root: path.join(__dirname, "../.."),
+  },
   transpilePackages: ["@gaming-pulse/core", "@gaming-pulse/seed-data"],
   images: {
     formats: ["image/avif", "image/webp"],
