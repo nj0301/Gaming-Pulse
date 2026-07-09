@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Rajdhani, Space_Grotesk } from "next/font/google";
 import { getNavigation, getSiteSettings } from "@/lib/cms";
-import { SITE_NAME, SITE_URL } from "@/lib/config";
+import { PRODUCTION_SITE_URL, SITE_NAME, SITE_URL } from "@/lib/config";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { organizationJsonLd } from "@/lib/seo/jsonld";
@@ -21,8 +21,12 @@ const rajdhani = Rajdhani({
   display: "swap",
 });
 
+const isProd = process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
+const metadataBaseUrl = new URL(isProd ? PRODUCTION_SITE_URL : SITE_URL);
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  // In production, this must be the canonical public origin (never localhost).
+  metadataBase: metadataBaseUrl,
   title: {
     default: `${SITE_NAME} — Gaming news, releases and industry insight`,
     template: `%s | ${SITE_NAME}`,
